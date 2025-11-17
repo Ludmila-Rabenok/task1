@@ -1,0 +1,47 @@
+package by.rabenok.task1;
+
+import by.rabenok.task1.entity.CustomArray;
+import by.rabenok.task1.exception.ArrayException;
+import by.rabenok.task1.factory.ArrayFactory;
+import by.rabenok.task1.factory.impl.CustomArrayFactory;
+import by.rabenok.task1.parser.ArrayParser;
+import by.rabenok.task1.parser.impl.ArrayParserImpl;
+import by.rabenok.task1.reader.FileArrayReader;
+import by.rabenok.task1.reader.impl.FileArrayReaderImpl;
+import by.rabenok.task1.repository.DataBase;
+import by.rabenok.task1.service.ArrayCalculator;
+import by.rabenok.task1.service.ArrayMinMaxFinder;
+import by.rabenok.task1.service.ArraySorter;
+import by.rabenok.task1.service.impl.ArrayCalculatorImpl;
+import by.rabenok.task1.service.impl.ArrayMinMaxFinderImpl;
+import by.rabenok.task1.service.impl.ArraySorterImpl;
+import by.rabenok.task1.validator.Validator;
+import by.rabenok.task1.validator.impl.NumericValidator;
+
+import java.util.List;
+
+public class Main {
+
+    public static void main(String[] args) throws ArrayException {
+        FileArrayReader fileArrayReader = new FileArrayReaderImpl();
+        List<String> lines = fileArrayReader.readFile("file/file.txt");
+        ArrayParser arrayParser = new ArrayParserImpl();
+        ArrayFactory arrayFactory = new CustomArrayFactory();
+        Validator validator = new NumericValidator();
+        for (String line : lines) {
+            if (validator.isValidNumeric(line)) {
+                int[] array = arrayParser.parse(line);
+                arrayFactory.create(array);
+            }
+        }
+        ArrayCalculator arrayCalculator = new ArrayCalculatorImpl();
+        ArrayMinMaxFinder arrayMinMaxFinder = new ArrayMinMaxFinderImpl();
+        ArraySorter arraySorter = new ArraySorterImpl();
+        for (CustomArray customArray : DataBase.getInstance().getAllCustomArray()) {
+            arrayCalculator.sumOfArray(customArray);
+            arrayMinMaxFinder.findMin(customArray);
+            arrayMinMaxFinder.findMax(customArray);
+            arraySorter.bubbleSort(customArray);
+        }
+    }
+}
