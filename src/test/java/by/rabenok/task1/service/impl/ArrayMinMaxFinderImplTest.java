@@ -1,15 +1,15 @@
 package by.rabenok.task1.service.impl;
 
 import by.rabenok.task1.entity.CustomArray;
-import by.rabenok.task1.service.ArrayCalculator;
+import by.rabenok.task1.service.ArrayMinMaxFinder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class ArrayCalculatorImplTest {
-  ArrayCalculator arrayCalculator = new ArrayCalculatorImpl();
+class ArrayMinMaxFinderImplTest {
+  ArrayMinMaxFinder arrayMinMaxFinder = new ArrayMinMaxFinderImpl();
   CustomArray customArray;
 
   @BeforeEach
@@ -24,12 +24,22 @@ class ArrayCalculatorImplTest {
   }
 
   @Test
-  void shouldSumOfArray() {
+  void shouldFindMin() {
     //given
-    int sumExpected = 6;
+    int minExpected = 1;
     //when
-    int sumActual = arrayCalculator.sumOfArray(customArray);
+    int minActual = arrayMinMaxFinder.findMin(customArray);
     //then
-    assertEquals(sumActual, sumExpected);
+    assertEquals(minActual, minExpected);
+  }
+
+  @Test
+  void shouldFindMax() {
+    //given
+    int maxExpected = 3;
+    //when
+    int maxActual = arrayMinMaxFinder.findMax(customArray);
+    //then
+    assertEquals(maxActual, maxExpected);
   }
 }
