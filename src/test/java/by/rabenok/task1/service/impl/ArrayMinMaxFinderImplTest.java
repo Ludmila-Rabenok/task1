@@ -30,7 +30,7 @@ class ArrayMinMaxFinderImplTest {
     //when
     int minActual = arrayMinMaxFinder.findMin(customArray);
     //then
-    assertEquals(minActual, minExpected);
+    assertEquals(minExpected, minActual);
   }
 
   @Test
@@ -40,6 +40,6 @@ class ArrayMinMaxFinderImplTest {
     //when
     int maxActual = arrayMinMaxFinder.findMax(customArray);
     //then
-    assertEquals(maxActual, maxExpected);
+    assertEquals(maxExpected, maxActual);
   }
 }

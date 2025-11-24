@@ -9,6 +9,8 @@ import by.rabenok.task1.parser.impl.ArrayParserImpl;
 import by.rabenok.task1.reader.FileArrayReader;
 import by.rabenok.task1.reader.impl.FileArrayReaderImpl;
 import by.rabenok.task1.repository.Repository;
+import by.rabenok.task1.specification.ElementSpecification;
+import by.rabenok.task1.specification.IdSpecification;
 import by.rabenok.task1.service.ArrayCalculator;
 import by.rabenok.task1.service.ArrayMinMaxFinder;
 import by.rabenok.task1.service.ArraySorter;
@@ -32,17 +34,19 @@ public class Main {
       if (validator.isValidNumeric(line)) {
         int[] array = arrayParser.parse(line);
         CustomArray customArray = arrayFactory.create(array);
-        Repository.getInstance().addCustomArray(customArray);
+        Repository.getInstance().add(customArray);
       }
     }
     ArrayCalculator arrayCalculator = new ArrayCalculatorImpl();
     ArrayMinMaxFinder arrayMinMaxFinder = new ArrayMinMaxFinderImpl();
     ArraySorter arraySorter = new ArraySorterImpl();
-    for (CustomArray customArray : Repository.getInstance().getAllCustomArray()) {
+    for (CustomArray customArray : Repository.getInstance().getAll()) {
       arrayCalculator.sumOfArray(customArray);
       arrayMinMaxFinder.findMin(customArray);
       arrayMinMaxFinder.findMax(customArray);
       arraySorter.bubbleSort(customArray);
     }
+    Repository.getInstance().query(new IdSpecification(2));
+    Repository.getInstance().query(new ElementSpecification(555));
   }
 }

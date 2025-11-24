@@ -30,6 +30,6 @@ class ArrayCalculatorImplTest {
     //when
     int sumActual = arrayCalculator.sumOfArray(customArray);
     //then
-    assertEquals(sumActual, sumExpected);
+    assertEquals(sumExpected, sumActual);
   }
 }

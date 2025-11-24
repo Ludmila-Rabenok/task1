@@ -1,12 +1,32 @@
 package by.rabenok.task1.entity;
 
-import java.util.Arrays;
+import by.rabenok.task1.observer.CustomArrayEvent;
+import by.rabenok.task1.observer.CustomArrayObservable;
+import by.rabenok.task1.observer.CustomArrayObserver;
 
-public class CustomArray {
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.Random;
+
+public class CustomArray implements CustomArrayObservable {
+  private int id;
   private int[] array;
+
+  private CustomArrayObserver observer;
 
   public CustomArray(int[] array) {
     this.array = array.clone();
+    this.id = getRandomId();
+    notifyObserver();
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+    notifyObserver();
   }
 
   public int[] getArray() {
@@ -15,6 +35,27 @@ public class CustomArray {
 
   public void setArray(int[] array) {
     this.array = array.clone();
+    notifyObserver();
+  }
+
+  private int getRandomId() {
+    Random random = new Random();
+    return random.nextInt();
+  }
+
+  @Override
+  public void attach(CustomArrayObserver observer) {
+    this.observer = observer;
+  }
+
+  @Override
+  public void detach(CustomArrayObserver observer) {
+    this.observer = null;
+  }
+
+  @Override
+  public void notifyObserver() {
+    observer.actionPerformed(new CustomArrayEvent(this));
   }
 
   @Override
@@ -22,18 +63,21 @@ public class CustomArray {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     CustomArray that = (CustomArray) o;
-    return Arrays.equals(array, that.array);
+    return id == that.id && Arrays.equals(array, that.array);
   }
 
   @Override
   public int hashCode() {
-    return Arrays.hashCode(array);
+    int result = Objects.hash(id);
+    result = 31 * result + Arrays.hashCode(array);
+    return result;
   }
 
   @Override
   public String toString() {
     final StringBuilder sb = new StringBuilder("CustomArray{");
-    sb.append("array=").append(Arrays.toString(array));
+    sb.append("id=").append(id);
+    sb.append(", array=").append(Arrays.toString(array));
     sb.append('}');
     return sb.toString();
   }

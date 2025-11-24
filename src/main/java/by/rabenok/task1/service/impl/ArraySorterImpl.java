@@ -37,5 +37,4 @@ public class ArraySorterImpl implements ArraySorter {
     }
     customArray.setArray(array);
   }
-
 }

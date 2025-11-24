@@ -8,8 +8,10 @@ import org.mockito.Mockito;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 
@@ -18,7 +20,7 @@ class FileArrayReaderImplTest {
   FileArrayReader fileArrayReader = new FileArrayReaderImpl();
 
   @Test
-  void shouldReadFile() throws ArrayException {
+  void shouldReadFileWithMock() throws ArrayException {
     //given
     try (MockedStatic<Files> mockedStatic = Mockito.mockStatic(Files.class)) {
       mockedStatic.when(() -> Files.readAllLines(any(Path.class))).thenReturn(any(List.class));
@@ -30,7 +32,20 @@ class FileArrayReaderImplTest {
   }
 
   @Test
-  void shouldThrowArrayException_whenFileNotFound() {
+  void shouldReadFile() throws ArrayException {
+    //given
+    List<String> expected = new ArrayList<>();
+    expected.add("11.22.33");
+    expected.add("55.6.7");
+    expected.add("9.8.77");
+    //when
+    List<String> actual = fileArrayReader.readFile("file/test.txt");
+    //then
+    assertEquals(expected, actual);
+  }
+
+  @Test
+  void shouldThrowArrayExceptionWhenFileNotFound() {
     assertThrows(ArrayException.class, () -> {
       fileArrayReader.readFile("non_existent_file.txt");
     });
